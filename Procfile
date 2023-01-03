@@ -1,1 +1,1 @@
-web: gunicorn pengolahan.wsgi
+web: gunicorn pengolahan.wsgi --log-file -

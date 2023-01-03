@@ -1,0 +1,58 @@
+{% load static %}
+{% block content %}
+{% if user.is_authenticated %}
+<meta http-equiv="refresh" content="0; url={% url 'sebaran' %}">
+{% else %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'img/logo.png' %}" rel="icon">
+    <title>UNION || Login-Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  </head>
+  <body>
+    <form  method="post">
+        <section class="vh-100" style="background-image : url('{% static 'img/login.jpg' %}');">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right" data-aos-delay="400">
+                <a href="/info" ><svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" fill="white" class="bi bi-arrow-left" viewBox="0 0 16 16" style="margin-left:-10px; margin-top:-300px;" >
+    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+    </svg></a>
+    <img src="{% static 'img/logo.png' %}" alt="" style="width:550px;">
+          </div>
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+                    <p class="text-center text-muted" style="font-family:copperplate; font-size: 60px; margin-bottom: -30px; margin-top: -15px;">UNION</p><br><br>
+                         {% csrf_token %}
+                         
+                        {{ form.as_p }}
+    
+                        <button class="btn btn-secondary btn-lg btn-block mt-3" type="submit">Login</button> <!--form tombol nya-->
+                        <p class="text-center text-muted mt-5 mb-0">Tidak punya akun? <a href="/signup"
+                          class="fw-bold text-body"><u>Registrasi</u></a></p>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+    </form>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      once: true,
+      duration: 1000,
+      easing: 'ease-in-out',
+    });
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+}	#map {
+    height: 500px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+</style>
+<br><br><br>
+<div class="container-xxl py-6">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+            <h1 class="display-5 mb-4">Kelola Data Sebaran</h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
+                <div id="map"></div><br><br><br>
+                <div class=" wow fadeInUp" data-wow-delay="0.3s" >
+                  <div class="text-start">
+                    <a href="/tambahsebaran" class="btn btn-secondary">Tambah Data</a>
+                </div><br>
+                <table class="table table-striped table-secondary wow fadeInUp" data-wow-delay="0.1s" id="example">
+                <thead>
+                  <tr>
+                    <th scope="col" style="text-align:center;">Usaha</th>
+                    <th scope="col" style="text-align:center;">Provinsi</th>
+                    <th scope="col" style="text-align:center;">Koordinat</th>
+                    <th scope="col" style="text-align:center;">2018 (Unit)</th>
+                    <th scope="col" style="text-align:center;">2019 (Unit)</th>
+                    <th scope="col" style="text-align:center;">Detail</th>
+                    <th scope="col" style="text-align:center;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+             {% for ikan in olah %}
+            <tr style="text-align:center;" >
+                <td>{{ ikan.usaha_id }}</td>
+                <td>{{ ikan.provinsi }}</td>
+                <td>{{ ikan.koordinat }}</td>
+                <td>{{ ikan.tahun18 }}</td>   
+                <td>{{ ikan.tahun19 }}</td>
+                <td>{{ ikan.detail }}</td> 
+                <td>
+          <a class="btn btn-success" href="{% url 'update2' ikan.pk %}"  role="button"><i class="bi bi-pencil-square"></i></a>
+          <a class="btn btn-danger" href="#" role="button" onclick="hapussebaran('{{ ikan.pk }}', '{{ ikan.provinsi }}')"><i class="bi bi-trash-fill"></i></a>
+                </td>        
+            </tr>
+            {% endfor %}
+        </tbody>
+              </table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Service End -->
+<br><br><br>
+
+<script src="{% static 'js/leaflet-providers.js' %}"></script>
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script>
+	const map = L.map('map').setView([-1.7125347215653441, 108.58333550397035], 5);
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+const Esri_WorldImagry = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+const light = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11'
+	});
+
+var baseLayers = {
+" Open Street Map": tiles,
+" World Imagery": Esri_WorldImagry,
+"Light Map": light
+};
+
+L.control.layers(baseLayers).addTo(map);
+
+{% for ikan in olah %}
+
+var table = '<table><tr style="font-family:oregon;"><td>Provinsi</td><td>:</td> <td> {{ ikan.provinsi }}</td></tr>';
+table += '<tr style="font-family:oregon;"><td>Jenis Usaha</td><td>:</td> <td> {{ ikan.usaha_id }}</td></tr><tr style="font-family:oregon;"><td>2018 (Unit)</td><td>:</td> <td> {{ ikan.tahun18 }}</td></tr><tr style="font-family:oregon;"><td>2019 (Unit)</td><td>:</td> <td> {{ ikan.tahun19 }}</td></tr></table>';
+var marker=  L.marker([{{ ikan.koordinat }}]).addTo(map);
+marker.bindPopup(table);
+
+  {% endfor %}
+    
+</script>
+
+<script>
+    function hapussebaran(id, provinsi){
+    swal({
+      title: "Apakah Anda Yakin?",
+      text: "Setelah data "  +  provinsi  +  " dihapus, data tidak dapat dikembalikan!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        swal("Berhasil!", "Data "  +  provinsi  +  " Berhasil Dihapus!", "success").then(function(){
+          window.location = "/sebaran/deletesebaran/"+id;
+        });
+      }
+    });
+  }
+  </script>
+
+
+
+{% endblock %}

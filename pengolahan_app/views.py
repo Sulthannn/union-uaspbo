@@ -126,7 +126,7 @@ def berita(request):
 @login_required(login_url=settings.LOGIN_URL)
 def tambahberita(request):
     if request.POST:
-        form = FormBerita(request.POST)
+        form = FormBerita(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             form = FormBerita()
@@ -153,7 +153,9 @@ def tambahberita(request):
 def updateberita(request, id):
     ubahberita = Berita.objects.get(pk=id)
     if request.POST:
-        form = FormBerita(request.POST, instance=ubahberita)
+        if request.FILES:
+            ubahberita.img.delete()
+        form = FormBerita(request.POST, request.FILES, instance=ubahberita)
         if form.is_valid():
             form.save()
             pesan = "Berita Berhasil Diupdate"
@@ -176,6 +178,7 @@ def updateberita(request, id):
 @login_required(login_url=settings.LOGIN_URL) 
 def deleteberita(request, id):
     berita = Berita.objects.get(pk=id)
+    berita.img.delete()
     berita.delete()
     
     return redirect("/berita/")

@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from pengolahan_app.views import *
 from django.contrib.auth.views import LoginView, LogoutView
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,3 +37,5 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

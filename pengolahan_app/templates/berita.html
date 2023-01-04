@@ -20,7 +20,9 @@
                             <span>{{ berita.isi }}</span>
                         </div>
                         <div class="position-relative mt-auto">
-                            <img class="img-fluid" src="{% static berita.img %}" alt="">
+                          {% if berita.img %}
+                          <img class="img-fluid" src="{{berita.img.url}}" alt="">
+                           {% endif %}
                             <div class="product-overlay">
                                 <a class="btn btn-lg-square btn-outline-light rounded-circle" href="{{ berita.link }}" target="_blank"><i class="fa fa-eye text-primary"></i></a>
                             </div>
@@ -60,7 +62,9 @@
             <tr style="text-align:center;" >
                 <td>{{ berita.judul }}</td>
                 <td>{{ berita.jenis_id }}</td>
-                <td><img width="100px" src="{% static berita.img %}" alt=""></td>
+                {% if berita.img %}
+                <td><img width="100px" src="{{berita.img.url}}" alt=""></td>
+                {% endif %}
                 <td>{{ berita.publikasi }}</td>   
                 <td>{{ berita.link }}</td>
                 <td>{{ berita.isi }}</td> 

@@ -24,7 +24,7 @@ class FormBerita(ModelForm):
 
         widgets = {
             'judul' : forms.TextInput({'class':'form-control', 'placeholder':'Judul', 'required':'required'}),
-            'img' : forms.TextInput({'class':'form-control', 'placeholder':'Gambar', 'required':'required'}),
+            'img' : forms.FileInput({'class':'form-control', 'placeholder':'Gambar', 'required':'required'}),
             'publikasi' : forms.DateInput({'type':'date','class':'form-control', 'placeholder':'Publikasi', 'required':'required'}),
             'link' : forms.TextInput({'class':'form-control', 'placeholder':'Link', 'required':'required'}),
             'isi' : forms.TextInput({'class':'form-control', 'placeholder':'Isi', 'required':'required'}),    

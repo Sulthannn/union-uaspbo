@@ -31,7 +31,7 @@ class Jenis(models.Model):
 
 class Berita(models.Model):
    judul = models.CharField(max_length=100)
-   img = models.CharField(null=True, max_length=40)
+   img = models.FileField(upload_to='berita/', null=True)
    publikasi = models.DateField(null=True)
    link = models.CharField(max_length=100)
    isi = models.TextField()
